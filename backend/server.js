@@ -16,12 +16,22 @@ app.use(cookieParser());
 app.use(morgan("tiny"));
 
 //setup cors
+const allowedOrigins = ["https://hotel-management-frontend-topaz.vercel.app"];
+
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
+
 
 // Routes
 const userRouter = require("./src/routes/user.route.js");
@@ -52,6 +62,9 @@ app.use("*", (req, res, next) => {
 // Global Error Handler
 app.use(errorHandler);
 
-app.listen(process.env.PORT || 5000, () => {
+
+
+app.listen(process.env.PORT, () => {
   console.log(`Server is running on Port ${process.env.PORT}`);
+
 });

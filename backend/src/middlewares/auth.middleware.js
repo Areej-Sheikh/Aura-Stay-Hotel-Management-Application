@@ -6,7 +6,7 @@ exports.authenticateUser = async (req, res, next) => {
     const token = req.cookies?.token;
     if (!token) {
       console.warn("No token found in cookies");
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Please Login" });
     }
 
     let decoded;
@@ -23,6 +23,8 @@ exports.authenticateUser = async (req, res, next) => {
     }
 
     req.user = user;
+    console.log("Cookies received");
+
     next();
   } catch (error) {
     console.error("Authentication error:", error);

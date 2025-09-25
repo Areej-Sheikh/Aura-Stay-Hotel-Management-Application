@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
-    <div className="bg-[#fef3e9] h-screen flex flex-col items-center justify-center">
+    <div className="bg-gray-100 h-screen flex flex-col items-center justify-center">
       <svg
         className="relative animate-[bounce404_2.5s_infinite]"
         enableBackground="new 0 0 226 249.135"
@@ -101,7 +101,7 @@ const NotFound = () => {
       <div className="mt-8">
         <Link
           to="/"
-          className=" font-mono text-xl bg-[#B17F44] text-[#FDF6F0] px-6 py-3 rounded-md hover:shadow-md"
+          className="text-gray-500 font-mono text-xl bg-gray-200 px-6 py-3 rounded-md hover:shadow-md"
         >
           Go Back
         </Link>

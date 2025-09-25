@@ -3,7 +3,13 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+
+const isProduction = process.env.NODE_ENV === "production";
+console.log("Running in production?", isProduction);
+
 module.exports.currentUser = (req, res, next) => {
+  if (!req.user)
+    return res.status(401).json({ user: null, message: "Unauthorized" });
   res.status(200).json({ user: req.user });
 };
 module.exports.login = async (req, res, next) => {
@@ -12,9 +18,16 @@ module.exports.login = async (req, res, next) => {
     const ExistingUser = await User.findOne({ email });
     if (!ExistingUser) return next(new CustomError("User not found", 404));
     const user = await User.authenticate(email, password);
+    if (!user) return next(new CustomError("Invalid credentials", 401));
     const token = user.generateAuthToken();
-    res.cookie("token", token, { expiresIn: "1d" });
-    res.status(200).json({ message: "Login successful", token });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
     next(new CustomError(error.message, 500));
   }
@@ -22,15 +35,23 @@ module.exports.login = async (req, res, next) => {
 module.exports.signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   try {
-    const userExists = await User.findOne({ username, email });
+    const userExists = await User.findOne({ $or: [{ username }, { email }] });
     if (userExists) return next(new CustomError("User already exists", 400));
 
     const newUser = new User({ username, email, password });
     await newUser.save();
 
     const token = newUser.generateAuthToken();
-    res.cookie("token", token, { expiresIn: "1d" });
-    res.status(201).json({ message: "User created successfully", token });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res
+      .status(201)
+      .json({ message: "User created successfully", token, user: newUser });
   } catch (error) {
     next(new CustomError(error.message, 500));
   }
@@ -39,8 +60,10 @@ module.exports.logout = async (req, res, next) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     });
+
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     next(new CustomError("Logout Failed", 500));
@@ -68,11 +91,11 @@ module.exports.resetPassword = async (req, res, next) => {
     const user = await User.findOne({ email });
     if (!user) return next(new CustomError("User not found", 404));
 
-    const resetToken = jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
+    const resetToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
 
-    const resetLink = `http://localhost:5713/reset-password/${resetToken}`;
+    const resetLink = `https://hotel-management-frontend-qo6dgph2a-areej-fatima.vercel.app/reset-password/${resetToken}`;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",

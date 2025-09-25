@@ -1,7 +1,9 @@
 export const calculateAverageRating = (nums) => {
   const sum = nums.reduce((prev, next) => prev + next, 0);
-  return Math.round(sum / nums.length);
+  const average = sum / nums.length;
+  return parseFloat(average.toFixed(1));
 };
+
 export const calculateDuration = (date) => {
   if (!date) return "-";
 

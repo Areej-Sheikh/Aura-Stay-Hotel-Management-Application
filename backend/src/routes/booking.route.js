@@ -10,4 +10,3 @@ router.delete('/:id', authenticateUser, cancelBooking)
 router.put('/:id', authenticateUser, updateBooking)
 
 module.exports = router; 
- 

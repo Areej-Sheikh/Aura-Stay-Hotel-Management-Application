@@ -55,7 +55,7 @@ Built with React, Node.js, MongoDB, TailwindCSS, and integrated with Razorpay an
 <p align="center">
   <img src="/images/bookingConfirmation.png" width="700">
 </p>
----
+
 
 <h1 align="center"> Admin Interface</h1>
 

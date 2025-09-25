@@ -27,32 +27,52 @@ Built with React, Node.js, MongoDB, TailwindCSS, and integrated with Razorpay an
 ---
 ## Live demo
 
-[🌐 Live Demo](https://your-live-demo-link.com)
+[🌐 Live Demo](https://hotel-management-frontend-topaz.vercel.app/)
 
 ---
 ## 📸 Screenshots
 
-### User Interface
+<h1 align="center"> User Interface</h1>
 
 <p align="center">
   <img src="/images/dashboard.png" width="700">
 </p>
-
+<p align="center">
+  <img src="/images/bookingPage.png" width="700">
+</p>
+<p align="center">
+  <img src="/images/property.png" width="700">
+</p>
+<p align="center">
+  <img src="/images/reviews.png" width="700">
+</p>
 <p align="center">
   <img src="/images/myProperties.png" width="700">
 </p>
 <p align="center">
   <img src="/images/myBookings.png" width="700">
 </p>
+<p align="center">
+  <img src="/images/bookingConfirmation.png" width="700">
+</p>
+---
 
-### Admin Interface
+<h1 align="center"> Admin Interface</h1>
 
 <p align="center">
-  <img src="/images/adminPanel.png" width="700">
+  <img src="/images/adminUsers.png" width="700">
 </p>
 <p align="center">
-  <img src="/images/adminPaymentsPage.png" width="700">
+  <img src="/images/allProperties.png" width="700">
 </p>
+
+<p align="center">
+  <img src="/images/allBookings.png" width="700">
+</p>
+<p align="center">
+  <img src="/images/allPayments.png" width="700">
+</p>
+
 
 ---
 
